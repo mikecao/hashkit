@@ -1,0 +1,26 @@
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script src="md5.js"></script>
+<script src="hashkit.js"></script>
+</head>
+<body>
+Test:
+<div id="test">
+</div>
+<script>
+$(document).ready(function(){
+    var hashkit = new Hashkit();
+    hashkit.salt = "abc";
+    
+    var a = [0,1,2,3,4,5,10,100,363,1000,10000];
+    for (var i = 0; i < a.length; i++) {
+        var n = a[i];
+        var x = hashkit.encode(n);
+        var y = hashkit.decode(x);
+        $("#test").append("<div>" + n + " -> " + x + " -> " + y + "</div>");
+    }
+});
+</script>
+</body>
+</html>

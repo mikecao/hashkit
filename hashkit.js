@@ -1,6 +1,10 @@
 (function(){
-var crypto = require('crypto');
+// Requirements
+if (typeof require !== 'undefined') {
+    var crypto = require('crypto');
+}
 
+// Constructor
 var Hashkit = function(options){
     this.chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     this.salt = '';
@@ -13,6 +17,7 @@ Hashkit.prototype.encode = function(i){
         var seed = this.getSeed(i, this.salt, this.padding);
         i = parseInt(seed + '' + i);
     }
+
     return this.baseEncode(i);
 };
 
@@ -56,7 +61,7 @@ Hashkit.prototype.baseDecode = function(s){
 
 // Gets the hash value of a string
 Hashkit.prototype.getHash = function(s){
-    return crypto.createHash('md5').update(s).digest('hex');
+    return md5(s);
 };
 
 // Gets a seed value for number encoding
@@ -74,6 +79,17 @@ Hashkit.prototype.getSeed = function(i, salt, length) {
 
     return num;
 };
+
+// Load MD5 function for hash function
+var md5 = function(s) {
+    if (typeof require !== 'undefined') {
+        return crypto.createHash('md5').update(s).digest('hex')
+    }
+    else {
+        return window.md5(s);
+    }
+};
+
 
 // Export for nodejs, AMD, or browser
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
