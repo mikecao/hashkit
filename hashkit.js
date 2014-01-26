@@ -4,7 +4,7 @@
  * Copyright 2014 Mike Cao <mike@mikecao.com>
  * Licensed under the MIT license
  *
- * MD5 modified from:
+ * MD5 functions modified from:
  * JavaScript MD5 1.0.1
  * Copyright 2011, Sebastian Tschan
  * https://github.com/blueimp/JavaScript-MD5
