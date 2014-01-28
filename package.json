@@ -1,0 +1,11 @@
+{
+    "name": "hashkit",
+    "description": "A library for generating short ids like Youtube, Bitly and Imgur",
+    "version": "0.1.0",
+    "author": "Mike Cao <mike@mikecao.com>",
+    "keywords": [
+        "hash"
+    ],
+    "repository": "https://github.com/mikecao/hashkit.git",
+    "license": "MIT"
+}
