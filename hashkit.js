@@ -6,14 +6,14 @@
  * Copyright 2014 Mike Cao <mike@mikecao.com>
  * Licensed under the MIT license
  */
-(function () {
+(function() {
     /*** Core functions ***/
 
     // Constructor
     var Hashkit = function(options) {
         this.chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         this.salt = '';
-        this.padding = 2;
+        this.padding = 0;
 
         if (options) {
             for (i in options) {
@@ -25,10 +25,7 @@
     // Converts a number into an encoded string
     Hashkit.prototype.encode = function(i) {
         if (typeof this.salt === "string" && this.salt.length > 0) {
-            if (this.padding < 1) this.padding = 1;
-            if (this.padding > 8) this.padding = 8;
-
-            i = getMaskedNum(i, this.salt, this.padding);
+            i = getMaskedNum(i, this.salt);
         }
 
         return baseEncode(i, this.chars);
@@ -38,7 +35,10 @@
     Hashkit.prototype.decode = function(s) {
         var num = baseDecode(s, this.chars);
 
-        if (typeof this.salt === "string" && this.salt.length > 0 && this.padding > 0) {
+        if (typeof this.salt === "string" && this.salt.length > 0) {
+            return parseInt(num.toString().substr(4));
+        }
+        else if (this.padding > 0) {
             return parseInt(num.toString().substr(this.padding));
         }
 
@@ -73,10 +73,10 @@
     }
 
     // Gets a masked number
-    function getMaskedNum(i, salt, length) {
+    function getMaskedNum(i, salt) {
         var hash = getHash(i + '' + salt);
         var dec = parseInt(hash.substr(0, 8), 16);
-        var base = Math.pow(10, length);
+        var base = Math.pow(10, 4);
         var num = dec % base;
 
         if (num == 0) num = 1;
@@ -98,7 +98,8 @@
 
     // Gets the MD5 hash of a string
     var md5 = function(str) {
-        var bytes = [],
+        var i, j,
+            bytes = [],
             words = [],
             hex = [];
 
@@ -128,24 +129,24 @@
         str = unescape(encodeURIComponent(str));
 
         // Convert string to bytes
-        for (var i = 0; i < str.length; i++) {
+        for (i = 0; i < str.length; i++) {
             bytes.push(str.charCodeAt(i) & 0xFF);
         }
 
         // Convert bytes to words
-        for (var i = 0, b = 0; i < bytes.length; i++, b += 8) {
-            words[b >>> 5] |= bytes[i] << (24 - b % 32);
+        for (i = 0, j = 0; i < bytes.length; i++, j += 8) {
+            words[j >>> 5] |= bytes[i] << (24 - j % 32);
         }
 
         var m = words,
             l = str.length * 8,
-            a =  1732584193,
-            b = -271733879,
-            c = -1732584194,
-            d =  271733878;
+            a = 0x67452301,
+            b = 0xefcdab89,
+            c = 0x98badcfe,
+            d = 0x10325476;
 
         // Swap endian
-        for (var i = 0; i < m.length; i++) {
+        for (i = 0; i < m.length; i++) {
             m[i] = ((m[i] << 8) | (m[i] >>> 24)) & 0x00FF00FF |
                 ((m[i] << 24) | (m[i] >>> 8)) & 0xFF00FF00;
         }
@@ -155,7 +156,7 @@
         m[(((l + 64) >>> 9) << 4) + 14] = l;
 
         // Calculate
-        for (var i = 0; i < m.length; i += 16) {
+        for (i = 0; i < m.length; i += 16) {
             var aa = a,
                 bb = b,
                 cc = c,
@@ -163,7 +164,7 @@
 
             var tmp, n, x, y, z;
 
-            for (var j = 0; j < 64; j++) {
+            for (j = 0; j < 64; j++) {
                 z = Z[j];
                 if (j < 16) {
                     x = m[i + j];
@@ -205,18 +206,18 @@
         words = [a, b, c, d];
 
         // Swap endian
-        for (var i = 0; i < words.length; i++) {
+        for (i = 0; i < words.length; i++) {
             words[i] = ((words[i] << 8) | (words[i] >>> 24)) & 0x00FF00FF |
                 ((words[i] << 24) | (words[i] >>> 8)) & 0xFF00FF00;
         }
 
         // Convert words to bytes
-        for (bytes = [], b = 0; b < words.length * 32; b += 8) {
-            bytes.push((words[b >>> 5] >>> (24 - b % 32)) & 0xFF);
+        for (bytes = [], i = 0; i < words.length * 32; i += 8) {
+            bytes.push((words[i >>> 5] >>> (24 - i % 32)) & 0xFF);
         }
 
         // Convert bytes to hex
-        for (var hex = [], i = 0; i < bytes.length; i++) {
+        for (hex = [], i = 0; i < bytes.length; i++) {
             hex.push((bytes[i] >>> 4).toString(16));
             hex.push((bytes[i] & 0xF).toString(16));
         }
