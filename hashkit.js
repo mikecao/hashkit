@@ -25,7 +25,7 @@
     // Converts a number into an encoded string
     Hashkit.prototype.encode = function(i) {
         if (typeof this.salt === "string" && this.salt.length > 0) {
-            i = getMaskedNum(i, this.salt);
+            i = getMaskedNum(i, this.salt, this.padding | 3);
         }
 
         return baseEncode(i, this.chars);
@@ -36,7 +36,7 @@
         var num = baseDecode(s, this.chars);
 
         if (typeof this.salt === "string" && this.salt.length > 0) {
-            return parseInt(num.toString().substr(3));
+            return parseInt(num.toString().substr(this.padding | 3));
         }
         else if (this.padding > 0) {
             return parseInt(num.toString().substr(this.padding));
@@ -73,11 +73,11 @@
     }
 
     // Gets a masked number
-    function getMaskedNum(i, salt) {
+    function getMaskedNum(i, salt, length) {
         var hash = getHash(i + '' + salt);
         var rand = parseInt(hash.substr(0, 8), 16) / 4294967295;
-        var max = Math.pow(10, 3) - 1;
-        var min = Math.pow(10, 2);
+        var max = Math.pow(10, length) - 1;
+        var min = Math.pow(10, length - 1);
         var mask = Math.floor(min + rand * (max - min));
 
         return parseInt(mask + '' + i);
