@@ -36,7 +36,7 @@
         var num = baseDecode(s, this.chars);
 
         if (typeof this.salt === "string" && this.salt.length > 0) {
-            return parseInt(num.toString().substr(4));
+            return parseInt(num.toString().substr(3));
         }
         else if (this.padding > 0) {
             return parseInt(num.toString().substr(this.padding));
@@ -75,18 +75,12 @@
     // Gets a masked number
     function getMaskedNum(i, salt) {
         var hash = getHash(i + '' + salt);
-        var dec = parseInt(hash.substr(0, 8), 16);
-        var base = Math.pow(10, 4);
-        var num = dec % base;
+        var rand = parseInt(hash.substr(0, 8), 16) / 4294967295;
+        var max = Math.pow(10, 3) - 1;
+        var min = Math.pow(10, 2);
+        var mask = Math.floor(min + rand * (max - min));
 
-        if (num == 0) num = 1;
-
-        // Pad right
-        while (num < base / 10) {
-            num = num * 10;
-        }
-
-        return parseInt(num + '' + i);
+        return parseInt(mask + '' + i);
     }
 
     // Gets the hash value of a string
