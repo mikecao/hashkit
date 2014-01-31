@@ -45,6 +45,16 @@
         return num;
     };
 
+    // Shuffles the default character set
+    Hashkit.prototype.shuffleChars = function(seed) {
+        var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+        if (typeof this.salt === "string" && this.salt.length > 0) {
+            this.chars = shuffleArray(chars.split(''), seed).join('');
+        }
+    };
+
+
     // Converts a number into a base-n string
     function baseEncode(i, chars) {
         if (i == 0) return chars[0];
@@ -75,7 +85,7 @@
     // Gets a masked number
     function getMaskedNum(i, salt, length) {
         var hash = getHash(i + '' + salt);
-        var rand = parseInt(hash.substr(0, 8), 16) / 4294967295;
+        var rand = getRandom(hash);
         var max = Math.pow(10, length) - 1;
         var min = Math.pow(10, length - 1);
         var mask = Math.floor(min + rand * (max - min));
@@ -86,6 +96,27 @@
     // Gets the hash value of a string
     function getHash(s) {
         return md5(s);
+    }
+
+    // Gets a random number
+    function getRandom(hash) {
+        return parseInt(hash.substr(0, 8), 16) / 4294967295;
+    }
+
+    // Shuffles the contents of an array
+    function shuffleArray(array, seed) {
+        var counter = array.length, temp, index, r;
+
+        while (counter > 0) {
+            r = getRandom(getHash(index + '' + seed));
+            index = Math.floor(r * counter);
+            counter--;
+            temp = array[counter];
+            array[counter] = array[index];
+            array[index] = temp;
+        }
+
+        return array;
     }
 
     /*** MD5 functions ***/
