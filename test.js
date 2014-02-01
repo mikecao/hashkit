@@ -1,35 +1,34 @@
 var Hashkit = require('./hashkit.js');
 
-var h = new Hashkit();
-
 var a = [0,1,2,3,4,5,6,7,8,9,10,100,101,102,363,1000,1001,10000,10001,1000000,1000001,1000000000];
 
-for (var i = 0; i < a.length; i++) {
-    var j = a[i];
-    var s = h.encode(j);
-    var n = h.decode(s);
-    console.log("%s -> %s -> %s", j, s, n);
-}
-console.log(h.chars);
+function test(array, seed, padding, shuffle) {
+    var hashkit = new Hashkit({
+        'seed': seed,
+        'padding': padding,
+        'shuffle': shuffle
+    });
 
-console.log('---');
-h.salt = '0';
-h.shuffleChars(h.salt);
-for (var i = 0; i < a.length; i++) {
-    var j = a[i];
-    var s = h.encode(j);
-    var n = h.decode(s);
-    console.log("%s -> %s -> %s", j, s, n);
-}
-console.log(h.chars);
+    console.log('chars:', hashkit.chars, 'seed:', hashkit.seed, 'padding:', hashkit.padding);
+ 
+    for (var i = 0; i < array.length; i++) {
+        var j = array[i];
+        var s = hashkit.encode(j);
+        var n = hashkit.decode(s);
+        console.log("%s -> %s -> %s", j, s, n);
+    }
 
-console.log('---');
-h.salt = 'this is a really long salt value';
-h.shuffleChars(h.salt);
-for (var i = 0; i < a.length; i++) {
-    var j = a[i];
-    var s = h.encode(j);
-    var n = h.decode(s);
-    console.log("%s -> %s -> %s", j, s, n);
+    console.log('---');
 }
-console.log(h.chars);
+
+// Default
+test(a, 0, 0, false);
+
+// Shuffled characters
+test(a, 0, 0, true);
+
+// Masked numbers with padding
+test(a, 0, 3, false);
+
+// Masked numbers with padding and shuffling
+test(a, 0, 3, true);
