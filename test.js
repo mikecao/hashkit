@@ -32,3 +32,6 @@ test(a, 0, 3, false);
 
 // Masked numbers with padding and shuffling
 test(a, 0, 3, true);
+
+// All options
+test(a, 123456789, 10, true);
