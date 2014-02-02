@@ -9,45 +9,48 @@
 (function() {
     /*** Core functions ***/
 
-    var defaultChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    var defaults = {
+        "chars": chars,
+        "padding": 0,
+        "seed": 0,
+        "shuffle": false
+    };
 
     // Constructor
     var Hashkit = function(options) {
-        this.chars = defaultChars;
-        this.padding = 0;
-        this.seed = 0;
-        this.shuffle = false;
+        this.options = {};
 
-        if (options) {
-            for (i in options) {
-                this[i] = options[i];
-            }
+        extend(this.options, extend(defaults, options));
+
+        if (this.options.padding > 8) {
+            this.options.padding = 8;
         }
 
-        if (this.shuffle) {
-            this.shuffleChars(this.seed);
+        if (this.options.shuffle) {
+            this.shuffleChars(this.options.seed);
         }
     };
 
     // Converts a number into an encoded string
     Hashkit.prototype.encode = function(i) {
-        if (this.padding > 0) {
-            if (this.padding > 8) this.padding = 8;
+        var options = this.options;
 
-            i = getMaskedNum(i, this.seed, this.padding);
+        if (options.padding > 0) {
+            i = getMaskedNum(i, options.seed, options.padding);
         }
 
-        return baseEncode(i, this.chars);
+        return baseEncode(i, options.chars);
     };
 
     // Converts an encoded string into a number
     Hashkit.prototype.decode = function(s) {
-        var num = baseDecode(s, this.chars);
+        var options = this.options;
+        var num = baseDecode(s, options.chars);
 
-        if (this.padding > 0) {
-            if (this.padding > 8) this.padding = 8;
-
-            return parseInt(num.toString().substr(this.padding));
+        if (options.padding > 0) {
+            return parseInt(num.toString().substr(options.padding));
         }
 
         return num;
@@ -86,7 +89,7 @@
             seed = getHashCode(seed);
         }
 
-        this.chars = shuffleArray(defaultChars.split(''), seed).join('');
+        this.options.chars = shuffleArray(chars.split(''), seed).join('');
     };
 
     // Gets a masked number
@@ -134,6 +137,21 @@
 
         return array;
     }
+
+    // Copies object properties
+    function extend (target, source) {
+        target = target || {};
+        for (var prop in source) {
+            if (typeof source[prop] === 'object') {
+                target[prop] = extend(target[prop], source[prop]);
+            }
+            else {
+                target[prop] = source[prop];
+            }
+        }
+        return target;
+    }
+
 
     /*** Export ***/
 

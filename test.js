@@ -1,6 +1,6 @@
 var Hashkit = require('./hashkit.js');
 
-var a = [0,1,2,3,4,5,6,7,8,9,10,100,101,102,363,1000,1001,10000,10001,1000000,1000001,1000000000];
+var a = [0,1,2,3,4,5,6,7,8,9,10,100,101,102,1000,1001,10000,10001,1000000,1000001,1000000000];
 
 function test(array, seed, padding, shuffle) {
     var hashkit = new Hashkit({
@@ -9,7 +9,7 @@ function test(array, seed, padding, shuffle) {
         'shuffle': shuffle
     });
 
-    console.log('chars:', hashkit.chars, 'seed:', hashkit.seed, 'padding:', hashkit.padding);
+    console.log(hashkit.options);
  
     for (var i = 0; i < array.length; i++) {
         var j = array[i];
