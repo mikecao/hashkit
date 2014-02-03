@@ -13,18 +13,20 @@
 
     var defaults = {
         "chars": chars,
-        "padding": 0,
-        "seed": 0,
-        "shuffle": false
+        "shuffle": false,
+        "mask": false,
+        "padding": 3,
+        "seed": 123456789
     };
 
     // Constructor
     var Hashkit = function(options) {
-        this.options = {};
-
-        extend(this.options, extend(defaults, options));
-
-        if (this.options.padding > 8) {
+        this.options = extend({}, defaults, options);
+        
+        if (this.options.padding < 1) {
+            this.options.padding = 1;
+        }
+        else if (this.options.padding > 8) {
             this.options.padding = 8;
         }
 
@@ -35,22 +37,19 @@
 
     // Converts a number into an encoded string
     Hashkit.prototype.encode = function(i) {
-        var options = this.options;
-
-        if (options.padding > 0) {
-            i = getMaskedNum(i, options.seed, options.padding);
+        if (this.options.mask) {
+            i = getMaskedNum(i, this.options.seed, this.options.padding);
         }
 
-        return baseEncode(i, options.chars);
+        return baseEncode(i, this.options.chars);
     };
 
     // Converts an encoded string into a number
     Hashkit.prototype.decode = function(s) {
-        var options = this.options;
-        var num = baseDecode(s, options.chars);
+        var num = baseDecode(s, this.options.chars);
 
-        if (options.padding > 0) {
-            return parseInt(num.toString().substr(options.padding));
+        if (this.options.mask) {
+            return parseInt(num.toString().substr(this.options.padding));
         }
 
         return num;
@@ -85,11 +84,11 @@
 
     // Shuffles the default character set
     Hashkit.prototype.shuffleChars = function(seed) {
-        if (typeof seed == "string") {
+        if (typeof seed === "string") {
             seed = getHashCode(seed);
         }
 
-        this.options.chars = shuffleArray(chars.split(''), seed).join('');
+        this.options.chars = shuffle(chars.split(''), seed).join('');
     };
 
     // Gets a masked number
@@ -123,8 +122,10 @@
         }, 0); 
     }
 
+    /*** Helper functions ***/
+
     // Shuffles the contents of an array
-    function shuffleArray(array, seed) {
+    function shuffle(array, seed) {
         var i = array.length, j, tmp;
 
         while (i > 0) {
@@ -138,9 +139,23 @@
         return array;
     }
 
-    // Copies object properties
-    function extend (target, source) {
+    // Extends object properties
+    function extend() {
+        var obj = {};
+
+        for (var i = arguments.length - 1; i > 0; i--) {
+            var source = arguments[i];
+            var target = copy({}, arguments[i-1]);
+            obj = arguments[i-1] = copy(target, source);
+        }
+
+        return obj;
+    }
+
+    // Copies properties between objects
+    function copy(target, source) {
         target = target || {};
+
         for (var prop in source) {
             if (typeof source[prop] === 'object') {
                 target[prop] = extend(target[prop], source[prop]);
@@ -149,9 +164,9 @@
                 target[prop] = source[prop];
             }
         }
+
         return target;
     }
-
 
     /*** Export ***/
 
