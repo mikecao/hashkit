@@ -31,3 +31,6 @@ test(a, { "shuffle": true, "mask": true });
 
 // All options
 test(a, { "shuffle": true, "mask": true, "padding": 10, "seed": Math.random() * Date.now() });
+
+
+test(a, { "shuffle": true, "mask": true, "seed": 99999 });
