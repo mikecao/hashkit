@@ -57,7 +57,11 @@ When you encode a series of numbers using the default character set, you will ge
     101 -> bN
     102 -> bO
 
-If you provide a shuffled character set, for example `WLgvI6CN7tqi8xfdFJZYDVeuP5K0kpAhmTEG2SjH39cXoyMzQbsraUBwl1OR4n` you will instead get:
+If you provide a shuffled character set, for example:
+
+    WLgvI6CN7tqi8xfdFJZYDVeuP5K0kpAhmTEG2SjH39cXoyMzQbsraUBwl1OR4n
+
+You will instead get:
 
     100 -> Lj
     101 -> LH
@@ -86,3 +90,40 @@ Masking makes sequential numbers much more randomized and almost impossible to g
 To enable number masking:
 
     var hashkit = new Hashkit({ mask: true });
+
+## Padding
+
+The default padding length for number masking is 3. So the number 9 can be padded with 123 and result in 1239. You can adjust the padding length by
+passing in a different value:
+
+    var hashkit = new Hashkit({ mask: true, padding: 2 });
+
+## Seeding
+
+You can further randomize the results of character shuffling and number masking by passing in your own seed value:
+
+    var hashkit = new Hashkit({ shuffle: true, mask: true, seed: 123456789 });
+
+This will produce the following character set:
+
+    WLgvI6CN7tqi8xfdFJZYDVeuP5K0kpAhmTEG2SjH39cXoyMzQbsraUBwl1OR4n
+
+And the following short ids:
+
+    1 -> gfd
+    2 -> PP
+    3 -> LgG
+
+By changing the seed value:
+
+    var hashkit = new Hashkit({ shuffle: true, mask: true, seed: 99999 });
+
+You will get a different character set:
+
+    yWjaFqLb8uIliZz7vr2REC30MPUhSxtpY1J6TfswGcmXdV9KDnegoHQkAN54OB
+
+And different short ids:
+
+    1 -> WT7
+    2 -> AO
+    3 -> UB
