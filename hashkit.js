@@ -22,7 +22,7 @@
     // Constructor
     var Hashkit = function(options) {
         this.options = extend({}, defaults, options);
-        
+
         if (this.options.padding < 1) {
             this.options.padding = 1;
         }
@@ -31,7 +31,7 @@
         }
 
         if (this.options.shuffle) {
-            this.shuffleChars(this.options.seed);
+            this.options.chars = shuffle(chars.split(''), getHashCode(this.options.seed)).join('');
         }
     };
 
@@ -82,15 +82,6 @@
         return n;
     }
 
-    // Shuffles the default character set
-    Hashkit.prototype.shuffleChars = function(seed) {
-        if (typeof seed === "string") {
-            seed = getHashCode(seed);
-        }
-
-        this.options.chars = shuffle(chars.split(''), seed).join('');
-    };
-
     // Gets a masked number
     function getMaskedNum(i, seed, padding) {
         var r = getRandom(i ^ seed, 10);
@@ -115,8 +106,12 @@
     };
 
     // Gets the hash code of a string
-    function getHashCode(s) {
-        return s.split('').reduce(function(a, b) {
+    function getHashCode(str) {
+        if (typeof str !== "string") {
+            return str;
+        }
+
+        return str.split('').reduce(function(a, b) {
             a = ((a << 5) - a) + b.charCodeAt(0);
             return a & a;
         }, 0); 
