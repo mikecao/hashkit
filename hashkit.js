@@ -38,7 +38,7 @@
     // Converts a number into an encoded string
     Hashkit.prototype.encode = function(i) {
         if (this.options.mask) {
-            i = getMaskedNum(i, this.options.seed, this.options.padding);
+            i = getMaskedNum(i, getHashCode(this.options.seed), this.options.padding);
         }
 
         return baseEncode(i, this.options.chars);

@@ -104,7 +104,7 @@ You can further randomize the results of character shuffling and number masking 
 
     var hashkit = new Hashkit({ shuffle: true, mask: true, seed: 123456789 });
 
-This will produce the following character set:
+The seed can be any integer number or a string. The default seed will produce the following character set:
 
     WLgvI6CN7tqi8xfdFJZYDVeuP5K0kpAhmTEG2SjH39cXoyMzQbsraUBwl1OR4n
 
