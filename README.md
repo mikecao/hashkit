@@ -3,6 +3,12 @@ hashkit
 
 A tool for generating short ids like Youtube, Bitly and Imgur.
 
+## Installation
+
+You can install Hashkit using npm:
+
+    npm install hashkit
+
 ## Usage
 
 ### node.js
