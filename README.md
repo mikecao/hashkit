@@ -39,7 +39,7 @@ After loading the script you can declare an instance of Hashkit and use the `enc
 
 This should output:
 
-    1000 -> bM -> 1000
+    1000 -> qi -> 1000
 
 ## Options
 

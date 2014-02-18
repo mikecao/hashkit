@@ -1,20 +1,19 @@
 var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
-    uglify = require('gulp-uglify');
+    uglify = require('gulp-uglify'),
+    rename = require('gulp-rename');
  
-// Lint JS
 gulp.task('lint', function() {
     gulp.src('hashkit.js')
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
  
-// Concat & Minify JS
 gulp.task('minify', function(){
     gulp.src('hashkit.js')
         .pipe(uglify())
-        .pipe(gulp.dest('./build'));
+        .pipe(rename({suffix: '.min'}))
+        .pipe(gulp.dest('.'));
 });
  
-// Default
 gulp.task('default', ['lint', 'minify']);
