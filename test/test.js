@@ -13,7 +13,7 @@ describe("Hashkit", function(){
         });
     });
 
-    describe("character shuffling", function(){
+    describe("encoding and decoding", function(){
         var h = new hashkit();
         it("should encode and decode successfully", function(){
             assert.equal(h.encode(1), "b");
@@ -28,7 +28,7 @@ describe("Hashkit", function(){
     });
 
     describe("character shuffling", function(){
-        var h = new hashkit({shuffle: true});
+        var h = new hashkit({"shuffle": true});
         it("should shuffle characters", function(){
             var h = new hashkit({shuffle: true});
             assert.equal(h.options.shuffle, true);
@@ -37,7 +37,7 @@ describe("Hashkit", function(){
     });
 
     describe("number masking", function(){
-        var h = new hashkit({mask: true});
+        var h = new hashkit({"mask": true});
         it("should mask the real numbers", function(){
             assert.equal(h.options.mask, true);
             assert.notEqual(h.encode(1), "b");
