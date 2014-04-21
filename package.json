@@ -7,5 +7,6 @@
         "hash", "shorten", "url", "integer", "encode", "decode"
     ],
     "repository": "https://github.com/mikecao/hashkit.git",
-    "license": "MIT"
+    "license": "MIT",
+    "main": "hashkit"
 }
