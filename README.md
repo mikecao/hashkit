@@ -15,7 +15,7 @@ You can install Hashkit using npm:
 
 To use Hashkit on the server, require the file:
 
-    var Hashkit = require("./hashkit.js");
+    var Hashkit = require("hashkit");
 
 ### Browser
 
