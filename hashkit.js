@@ -21,6 +21,10 @@
 
     // Constructor
     var Hashkit = function(options) {
+        if (typeof options == "string") {
+            options = { "shuffle": true, "mask": true, "seed": hashcode(options) };
+        }
+
         this.options = extend({}, defaults, options);
 
         if (this.options.padding < 1) {

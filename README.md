@@ -41,9 +41,19 @@ This should output:
 
     1000 -> qi -> 1000
 
+## Salt
+
+If you want to randomize the results of the short ids, you can pass in a salt value as a string to the constructor:
+
+    var hashkit = new Hashkit("my salt string");
+
+Your output should now be:
+
+    1000 -> 2c54
+
 ## Options
 
-Hashkit provides the following options:
+If you want to fine tune the encoding process, Hashkit provides the following options:
 
     chars - Character set to use for encoding (default: abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789)
     shuffle - Shuffle the default character set (default: false)
