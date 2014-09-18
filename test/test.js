@@ -27,6 +27,20 @@ describe("Hashkit", function(){
         });
     });
 
+    describe("salt string", function(){
+        var h = new hashkit("my salt string");
+        it("should encode and decode successfully", function(){
+            assert.equal(h.encode(1), "Pa");
+            assert.equal(h.encode(10), "8Ep");
+            assert.equal(h.encode(100), "8zmN");
+            assert.equal(h.encode(1000), "2c54");
+            assert.equal(h.decode("Pa"), 1);
+            assert.equal(h.decode("8Ep"), 10);
+            assert.equal(h.decode("8zmN"), 100);
+            assert.equal(h.decode("2c54"), 1000);
+        });
+    });
+
     describe("character shuffling", function(){
         var h = new hashkit({"shuffle": true});
         it("should shuffle characters", function(){
