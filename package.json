@@ -1,7 +1,7 @@
 {
     "name": "hashkit",
     "description": "A tool for generating short ids like Youtube, Bitly and Imgur",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "author": "Mike Cao <mike@mikecao.com>",
     "keywords": [
         "hash", "shorten", "url", "integer", "encode", "decode"
