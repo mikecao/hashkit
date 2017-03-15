@@ -1,12 +1,24 @@
 {
-    "name": "hashkit",
-    "description": "A tool for generating short ids like Youtube, Bitly and Imgur",
-    "version": "0.2.1",
-    "author": "Mike Cao <mike@mikecao.com>",
-    "keywords": [
-        "hash", "shorten", "url", "integer", "encode", "decode"
-    ],
-    "repository": "https://github.com/mikecao/hashkit.git",
-    "license": "MIT",
-    "main": "hashkit"
+  "name": "hashkit",
+  "description": "A tool for generating short ids like Youtube, Bitly and Imgur",
+  "version": "1.0.0",
+  "author": "Mike Cao <mike@mikecao.com>",
+  "main": "src/hashkit.js",
+  "keywords": [
+    "hash",
+    "shorten",
+    "url",
+    "integer",
+    "encode",
+    "decode"
+  ],
+  "repository": "https://github.com/mikecao/hashkit.git",
+  "license": "MIT",
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.1.0",
+    "mocha": "^3.2.0"
+  }
 }

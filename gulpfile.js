@@ -1,19 +1,12 @@
-var gulp = require('gulp'),
-    jshint = require('gulp-jshint'),
-    uglify = require('gulp-uglify'),
-    rename = require('gulp-rename');
- 
-gulp.task('lint', function() {
-    gulp.src('hashkit.js')
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'));
-});
- 
+var gulp = require('gulp');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
+
 gulp.task('minify', function(){
-    gulp.src('hashkit.js')
+    gulp.src('./src/hashkit.js')
         .pipe(uglify())
         .pipe(rename({suffix: '.min'}))
-        .pipe(gulp.dest('.'));
+        .pipe(gulp.dest('./dist'));
 });
  
-gulp.task('default', ['lint', 'minify']);
+gulp.task('default', ['minify']);
