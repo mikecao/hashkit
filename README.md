@@ -188,3 +188,7 @@ And different short ids:
 2 -> AO
 3 -> UB
 ```
+
+## License
+
+MIT
