@@ -12,6 +12,9 @@
     "encode",
     "decode"
   ],
+  "scripts": {
+    "test": "mocha test/*.* --reporter spec"
+  },
   "repository": "https://github.com/mikecao/hashkit.git",
   "license": "MIT",
   "devDependencies": {

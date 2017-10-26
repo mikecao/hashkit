@@ -1,0 +1,13 @@
+language: node_js
+
+node_js:
+  - 4.0
+  - 6.0
+  - 7.0
+  - 8.0
+
+before_script:
+  - npm install
+
+script:
+  - npm test
